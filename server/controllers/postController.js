@@ -1,8 +1,10 @@
-const post = require("../models/Post");
+const Post = require("../models/Post");
+const authMiddleware = require('../middlewares/authMiddleware');
+
 
 exports.getAllPosts = async (req, res, next) => {
   try {
-    const posts = await post.find().populate("category");
+    const posts = await Post.find().populate("category");
     res.json(posts);
   } catch (error) {
     next(error);
@@ -11,7 +13,7 @@ exports.getAllPosts = async (req, res, next) => {
 
 exports.getPostById = async (req, res, next) => {
   try {
-    const post = await post.findById(req.params.id).populate("category");
+    const post = await Post.findById(req.params.id).populate("category");
     if (!post) return res.status(404).json({ message: "Post not found" });
     res.json(post);
   } catch (error) {

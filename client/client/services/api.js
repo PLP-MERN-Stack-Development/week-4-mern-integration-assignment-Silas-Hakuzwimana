@@ -106,7 +106,7 @@ export const categoryService = {
 export const authService = {
   // Register a new user
   register: async (userData) => {
-    const response = await api.post('/auth/register', userData);
+    const response = await api.post('/users/register', userData);
     return response.data;
   },
 
