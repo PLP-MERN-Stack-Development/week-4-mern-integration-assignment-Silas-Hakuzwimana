@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { postService } from '../../services/api';
+import { postService } from '../services/API';
 import { useNavigate } from 'react-router-dom';
 
 export default function AddPostForm() {

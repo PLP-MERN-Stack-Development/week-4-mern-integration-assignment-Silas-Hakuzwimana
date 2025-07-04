@@ -1,6 +1,5 @@
 const Post = require("../models/Post");
 
-
 exports.createPost = async (req, res, next) => {
   try {
     const post = await Post.create(req.body);
@@ -12,10 +11,13 @@ exports.createPost = async (req, res, next) => {
 
 exports.getAllPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find().populate("category");
+    const posts = await Post.find()
+      .populate("author", "name") // 👈 Only populate name
+      .populate("category", "name"); // 👈 Also populate category name
     res.json(posts);
   } catch (error) {
-    next(error);
+    console.error("Failed to fetch posts:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -31,8 +33,10 @@ exports.getPostById = async (req, res, next) => {
 
 exports.updatePost = async (req, res, next) => {
   try {
-    const post = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!post) return res.status(404).json({ message: 'Post not found' });
+    const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!post) return res.status(404).json({ message: "Post not found" });
     res.json(post);
   } catch (error) {
     next(error);
@@ -42,8 +46,8 @@ exports.updatePost = async (req, res, next) => {
 exports.deletePost = async (req, res, next) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-    res.json({ message: 'Post deleted' });
+    if (!post) return res.status(404).json({ message: "Post not found" });
+    res.json({ message: "Post deleted" });
   } catch (error) {
     next(error);
   }

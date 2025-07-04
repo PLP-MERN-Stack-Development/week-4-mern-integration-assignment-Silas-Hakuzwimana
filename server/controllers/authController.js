@@ -68,18 +68,32 @@ const getUserById = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const { name, email, role } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { name, email, role },
-      { new: true }
-    ).select("-password");
+    const { name, email, role, password } = req.body;
+
+    // Build update object dynamically
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+    if (role) updateData.role = role;
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
+
     if (!user) return res.status(404).json({ message: "User not found" });
+
     res.json(user);
   } catch (error) {
     next(error);
   }
 };
+
 
 const deleteUser = async (req, res, next) => {
   try {
