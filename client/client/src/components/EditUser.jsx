@@ -1,13 +1,10 @@
-import { useParams } from 'react-router-dom';
 import UserForm from './UserForm';
 
-export default function EditUser() {
-  const { id } = useParams();
-
+export default function EditUser({ id, onSuccess, onCancel }) {
   return (
-    <div className="max-w-3xl mx-auto mt-8 px-4">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Edit User</h2>
-      <UserForm id={id} />
+    <div className="my-6">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Edit User</h2>
+      <UserForm id={id} onSuccess={onSuccess} onCancel={onCancel} />
     </div>
   );
 }

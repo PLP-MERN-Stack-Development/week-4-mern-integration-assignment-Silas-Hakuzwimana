@@ -2,8 +2,11 @@ const Post = require("../models/Post");
 
 exports.createPost = async (req, res, next) => {
   try {
-    const post = await Post.create(req.body);
-    res.status(201).json(post);
+    const newPost = await Post.create({
+      ...req.body,
+      author: req.user.id, 
+    });
+    res.status(201).json(newPost);
   } catch (error) {
     next(error);
   }
@@ -12,8 +15,8 @@ exports.createPost = async (req, res, next) => {
 exports.getAllPosts = async (req, res, next) => {
   try {
     const posts = await Post.find()
-      .populate("author", "name") // 👈 Only populate name
-      .populate("category", "name"); // 👈 Also populate category name
+      .populate("author", "name") 
+      .populate("category", "name"); 
     res.json(posts);
   } catch (error) {
     console.error("Failed to fetch posts:", error);

@@ -31,7 +31,7 @@ export default function App() {
                         }
                     />
                     <Route
-                        path="/add"
+                        path="dashboard/add-new-user"
                         element={
                             <ProtectedRoute>
                                 <AddUser />

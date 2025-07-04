@@ -5,7 +5,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 router.get('/', authMiddleware, postController.getAllPosts);
 router.get('/:id', postController.getPostById);
-router.post('/', authMiddleware, authMiddleware, postController.createPost);
+router.post('/', authMiddleware, postController.createPost);
 router.put('/:id', authMiddleware, postController.updatePost);
 router.delete('/:id', authMiddleware, postController.deletePost);
 

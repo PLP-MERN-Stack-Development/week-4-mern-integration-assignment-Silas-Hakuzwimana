@@ -26,9 +26,10 @@ export default function Login() {
         e.preventDefault();
         try {
             const res = await API.post('/auth/login', form);
+            localStorage.setItem('user', JSON.stringify(res.data.user)); 
             localStorage.setItem('token', res.data.token);
             toast.success('Login successful!');
-            navigate('/'); // Redirect to home or dashboard
+            navigate('/dashboard');
         } catch (error) {
             console.error(error);
             toast.error(error.response?.data?.message || 'Login failed. Please try again.');
