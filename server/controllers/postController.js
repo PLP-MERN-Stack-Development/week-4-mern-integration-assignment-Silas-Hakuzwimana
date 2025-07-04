@@ -1,6 +1,14 @@
 const Post = require("../models/Post");
-const authMiddleware = require('../middlewares/authMiddleware');
 
+
+exports.createPost = async (req, res, next) => {
+  try {
+    const post = await Post.create(req.body);
+    res.status(201).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.getAllPosts = async (req, res, next) => {
   try {
@@ -16,15 +24,6 @@ exports.getPostById = async (req, res, next) => {
     const post = await Post.findById(req.params.id).populate("category");
     if (!post) return res.status(404).json({ message: "Post not found" });
     res.json(post);
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.createPost = async (req, res, next) => {
-  try {
-    const post = await Post.create(req.body);
-    res.status(201).json(post);
   } catch (error) {
     next(error);
   }

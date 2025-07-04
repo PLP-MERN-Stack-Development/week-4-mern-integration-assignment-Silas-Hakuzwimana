@@ -5,14 +5,16 @@ import { Link } from 'react-router-dom';
 export default function UserList() {
   const [users, setUsers] = useState([]);
 
+  const apiUsers = "http://localhost:5000/api/auth/users";
+  const apiEditUsers = "http://localhost:5000/api/auth/users";
   const fetchUsers = async () => {
-    const res = await API.get('/auth');
+    const res = await API.get(apiUsers);
     setUsers(res.data);
   };
 
   const deleteUser = async (id) => {
     if (window.confirm('Delete user?')) {
-      await API.delete(`/auth/${id}`);
+      await API.delete(apiEditUsers+`/${id}`);
       fetchUsers();
     }
   };

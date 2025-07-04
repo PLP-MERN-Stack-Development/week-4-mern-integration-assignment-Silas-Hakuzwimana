@@ -8,7 +8,7 @@ export default function UserForm({ id }) {
 
   useEffect(() => {
     if (id) {
-      API.get(`/users/${id}`).then(res => {
+      API.get(`/auth/users/${id}`).then(res => {
         setForm({ ...res.data, password: '' });
       });
     }
@@ -19,9 +19,10 @@ export default function UserForm({ id }) {
   const handleSubmit = async e => {
     e.preventDefault();
     if (id) {
-      await API.put(`/users/${id}`, form);
+      await API.put(`/auth/users/${id}`, form);
+      console.log(form.name + form.email + form.role);
     } else {
-      await API.post('/users/register', form);
+      await API.post('/auth/register', form);
     }
     navigate('/');
   };
@@ -39,6 +40,7 @@ export default function UserForm({ id }) {
           onChange={handleChange}
           className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          placeholder='Enter your name ....'
         />
       </div>
 
@@ -51,6 +53,7 @@ export default function UserForm({ id }) {
           type="email"
           className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          placeholder='Enter your email ...'
         />
       </div>
 
@@ -64,6 +67,7 @@ export default function UserForm({ id }) {
             type="password"
             className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
+            placeholder='Enter a strong password ...'
           />
         </div>
       )}
@@ -76,6 +80,7 @@ export default function UserForm({ id }) {
           onChange={handleChange}
           className="w-full border border-gray-300 rounded px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
+        <option value="" disabled>--Select a role --</option>
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select>
